@@ -1,11 +1,12 @@
 import sys, pickle, os, random
 import numpy as np
 
-## tags, BIO
-tag2label = {"O": 0,
-             "B-PER": 1, "I-PER": 2,
-             "B-LOC": 3, "I-LOC": 4,
-             "B-ORG": 5, "I-ORG": 6
+## tags
+tag2label = {"None": 0,
+             "QG": 1, "SX": 2,
+             "ZZ": 3, "YCJG": 4,
+             "BX": 5, "SJ": 6,
+             "CLZ": 7, "FD": 8
              }
 
 
@@ -52,7 +53,7 @@ def vocab_build(vocab_path, corpus_path, min_count):
             else:
                 word2id[word][1] += 1
     low_freq_words = []
-    for word, [word_id, word_freq] in word2id.items():
+    for word, [_, word_freq] in word2id.items():
         if word_freq < min_count and word != '<NUM>' and word != '<ENG>':
             low_freq_words.append(word)
     for word in low_freq_words:
@@ -66,6 +67,7 @@ def vocab_build(vocab_path, corpus_path, min_count):
     word2id['<PAD>'] = 0
 
     print(len(word2id))
+    print(word2id)
     with open(vocab_path, 'wb') as fw:
         pickle.dump(word2id, fw)
 
@@ -159,3 +161,10 @@ def batch_yield(data, batch_size, vocab, tag2label, shuffle=False):
     if len(seqs) != 0:
         yield seqs, labels
 
+if __name__ == "__main__":
+
+    corpus_path = 'all_data'
+    data = read_corpus(corpus_path)
+    vocab_build('word2id.pkl', 'train_data', 1)
+
+    # print(data)
