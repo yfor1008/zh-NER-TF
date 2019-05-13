@@ -181,7 +181,8 @@ class BiLSTM_CRF(object):
             label_list.extend(label_list_)
         label2tag = {}
         for tag, label in self.tag2label.items():
-            label2tag[label] = tag if label != 0 else label
+            # label2tag[label] = tag if label != 0 else label # 0 label not converted to None
+            label2tag[label] = tag
         tag = [label2tag[label] for label in label_list[0]]
         return tag
 
@@ -219,6 +220,8 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
+        # print(label_list_dev)
+        # print(seq_len_list_dev)
         self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
 
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
@@ -292,7 +295,8 @@ class BiLSTM_CRF(object):
         """
         label2tag = {}
         for tag, label in self.tag2label.items():
-            label2tag[label] = tag if label != 0 else label
+            # label2tag[label] = tag if label != 0 else label # 0 label not converted to None
+            label2tag[label] = tag
 
         model_predict = []
         for label_, (sent, tag) in zip(label_list, data):
@@ -305,9 +309,10 @@ class BiLSTM_CRF(object):
             for i in range(len(sent)):
                 sent_res.append([sent[i], tag[i], tag_[i]])
             model_predict.append(sent_res)
+            # print(sent_res)
         epoch_num = str(epoch+1) if epoch != None else 'test'
         label_path = os.path.join(self.result_path, 'label_' + epoch_num)
         metric_path = os.path.join(self.result_path, 'result_metric_' + epoch_num)
-        for _ in conlleval(model_predict, label_path, metric_path):
+        for _ in conlleval(model_predict, label_path, metric_path, self.tag2label):
             self.logger.info(_)
 

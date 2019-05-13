@@ -163,8 +163,8 @@ def batch_yield(data, batch_size, vocab, tag2label, shuffle=False):
 
 if __name__ == "__main__":
 
-    corpus_path = 'all_data'
-    data = read_corpus(corpus_path)
-    vocab_build('word2id.pkl', 'train_data', 1)
+    # corpus_path = './data_path/all_data'
+    # data = read_corpus(corpus_path)
+    vocab_build('./data_path/word2id.pkl', './data_path/all_data', 1)
 
     # print(data)

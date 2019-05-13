@@ -21,7 +21,7 @@
 use strict;
 
 my $false = 0;
-my $true = 42;
+my $true = 1;
 
 my $boundary = "-X-";     # sentence boundary
 my $correct;              # current corpus chunk tag (I,O,B)

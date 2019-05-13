@@ -26,7 +26,7 @@ parser.add_argument('--CRF', type=str2bool, default=True, help='use CRF at the t
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--clip', type=float, default=5.0, help='gradient clipping')
 parser.add_argument('--dropout', type=float, default=0.5, help='dropout keep_prob')
-parser.add_argument('--update_embedding', type=str2bool, default=True, help='update embedding during training')
+parser.add_argument('--update_embedding', type=str2bool, default=False, help='update embedding during training')
 parser.add_argument('--pretrain_embedding', type=str, default='random', help='use pretrained char embedding or init it randomly')
 parser.add_argument('--embedding_dim', type=int, default=300, help='random init char embedding_dim')
 parser.add_argument('--shuffle', type=str2bool, default=True, help='shuffle training data before each epoch')
@@ -116,7 +116,10 @@ elif args.mode == 'demo':
                 break
             else:
                 demo_sent = list(demo_sent.strip())
-                demo_data = [(demo_sent, ['O'] * len(demo_sent))]
+                demo_data = [(demo_sent, ['None'] * len(demo_sent))]
                 tag = model.demo_one(sess, demo_data)
-                PER, LOC, ORG = get_entity(tag, demo_sent)
-                print('PER: {}\nLOC: {}\nORG: {}'.format(PER, LOC, ORG))
+                print(demo_sent)
+                # print(demo_data)
+                print(tag)
+                # PER, LOC, ORG = get_entity(tag, demo_sent)
+                # print('PER: {}\nLOC: {}\nORG: {}'.format(PER, LOC, ORG))
